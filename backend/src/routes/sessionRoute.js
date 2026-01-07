@@ -1,50 +1,22 @@
-import axios from "axios";
+import express from "express";
+import { protectRoute } from "../middleware/protectRoute.js";
+import {
+  createSession,
+  endSession,
+  getActiveSessions,
+  getMyRecentSessions,
+  getSessionById,
+  joinSession,
+} from "../controllers/sessionController.js";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const router = express.Router();
 
-/* =========================
-   SESSION APIS (FIXED)
-========================= */
+router.post("/", protectRoute, createSession);
+router.get("/active", protectRoute, getActiveSessions);
+router.get("/my-recent", protectRoute, getMyRecentSessions);
+router.get("/:id", protectRoute, getSessionById);
+router.post("/:id/join", protectRoute, joinSession);
+router.post("/:id/end", protectRoute, endSession);
 
-export const getActiveSessions = async () => {
-  const res = await axios.get(
-    `${API_URL}/api/sessions/active`,
-    { withCredentials: true }
-  );
-  return res.data;
-};
-
-export const getMyRecentSessions = async () => {
-  const res = await axios.get(
-    `${API_URL}/api/sessions/my-recent`,
-    { withCredentials: true }
-  );
-  return res.data;
-};
-
-export const createSession = async (data) => {
-  const res = await axios.post(
-    `${API_URL}/api/sessions`,
-    data,
-    { withCredentials: true }
-  );
-  return res.data;
-};
-
-export const joinSession = async (id) => {
-  const res = await axios.post(
-    `${API_URL}/api/sessions/${id}/join`,
-    {},
-    { withCredentials: true }
-  );
-  return res.data;
-};
-
-export const endSession = async (id) => {
-  const res = await axios.post(
-    `${API_URL}/api/sessions/${id}/end`,
-    {},
-    { withCredentials: true }
-  );
-  return res.data;
-};
+/* 🔴 THIS LINE IS MANDATORY */
+export default router;
