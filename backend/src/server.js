@@ -18,7 +18,7 @@ const app = express();
 const __dirname = path.resolve();
 
 /* =========================
-   CORS CONFIG (FIXED)
+   CORS CONFIG (FINAL)
 ========================= */
 
 const allowedOrigins = [
@@ -28,14 +28,14 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow server-to-server
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
     },
-    credentials: true
+    credentials: true,
   })
 );
 
@@ -44,7 +44,7 @@ app.use(
 ========================= */
 
 app.use(express.json());
-app.use(clerkMiddleware()); // adds req.auth()
+app.use(clerkMiddleware());
 
 /* =========================
    ROUTES
@@ -57,20 +57,6 @@ app.use("/api/sessions", sessionRoutes);
 app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is up and running" });
 });
-
-/* =========================
-   PRODUCTION STATIC (OPTIONAL)
-========================= */
-
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.join(__dirname, "../frontend/dist/index.html")
-    );
-  });
-}
 
 /* =========================
    START SERVER
