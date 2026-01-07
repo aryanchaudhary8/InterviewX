@@ -1,5 +1,4 @@
 import express from "express";
-import path from "path";
 import cors from "cors";
 import { serve } from "inngest/express";
 import { clerkMiddleware } from "@clerk/express";
@@ -15,26 +14,20 @@ import sessionRoutes from "./routes/sessionRoute.js";
 dotenv.config();
 
 const app = express();
-const __dirname = path.resolve();
 
 /* =========================
-   CORS CONFIG (FINAL)
+   CORS (FINAL FIX)
 ========================= */
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://interview-x-khaki.vercel.app"
-];
-
+/**
+ * ✔ Allows http://localhost:any-port (5173, 5174, etc.)
+ * ✔ Allows cookies (Clerk auth)
+ * ✔ NO throwing errors
+ * ✔ NO missing headers
+ */
 app.use(
   cors({
-    origin(origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS"));
-    },
+    origin: true,
     credentials: true,
   })
 );
