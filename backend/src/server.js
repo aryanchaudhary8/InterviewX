@@ -15,16 +15,6 @@ dotenv.config();
 
 const app = express();
 
-/* =========================
-   CORS (FINAL FIX)
-========================= */
-
-/**
- * ✔ Allows http://localhost:any-port (5173, 5174, etc.)
- * ✔ Allows cookies (Clerk auth)
- * ✔ NO throwing errors
- * ✔ NO missing headers
- */
 app.use(
   cors({
     origin: true,
@@ -32,29 +22,20 @@ app.use(
   })
 );
 
-/* =========================
-   MIDDLEWARE
-========================= */
-
 app.use(express.json());
 app.use(clerkMiddleware());
-
-/* =========================
-   ROUTES
-========================= */
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/chat", chatRoutes);
 app.use("/api/sessions", sessionRoutes);
-
-app.get("/health", (req, res) => {
-  res.status(200).json({ msg: "api is up and running" });
-});
-
 app.get("/", (req, res) => {
   res.status(200).send("InterviewX backend running");
 });
 
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ msg: "api is up and running" });
+});
 /* =========================
    START SERVER
 ========================= */
