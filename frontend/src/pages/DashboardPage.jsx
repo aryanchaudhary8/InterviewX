@@ -11,6 +11,7 @@ import RecentSessions from "../components/RecentSessions";
 import CreateSessionModal from "../components/CreateSessionModal";
 
 function DashboardPage() {
+    console.log("API BASE URL 👉", import.meta.env.VITE_API_BASE_URL);
   const navigate = useNavigate();
   const { user } = useUser();
   const [showCreateModal, setShowCreateModal] = useState(false);

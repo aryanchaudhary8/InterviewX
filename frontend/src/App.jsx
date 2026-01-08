@@ -9,6 +9,8 @@ import ProblemsPage from "./pages/ProblemsPage";
 import SessionPage from "./pages/SessionPage";
 
 function App() {
+
+
   const { isSignedIn, isLoaded } = useUser();
 
   // this will get rid of the flickering effect
