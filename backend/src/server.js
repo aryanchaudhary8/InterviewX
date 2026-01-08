@@ -51,6 +51,10 @@ app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is up and running" });
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("InterviewX backend running");
+});
+
 /* =========================
    START SERVER
 ========================= */
