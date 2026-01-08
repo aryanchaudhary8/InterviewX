@@ -31,9 +31,15 @@ function DashboardPage() {
       },
       {
         onSuccess: (data) => {
+          if (!data?.session?._id) {
+            console.error("Invalid createSession response:", data);
+            return;
+          }
+
           setShowCreateModal(false);
           navigate(`/session/${data.session._id}`);
         },
+
       }
     );
   };
